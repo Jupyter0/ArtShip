@@ -1,9 +1,129 @@
 <!DOCTYPE html>
+{% load humanize %}
 <html>
+<head>
+    <title>Auction Listings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #f5f5f5;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            height: 100vh;
+        }
+
+        /* Main content area */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .auction-item {
+            display: flex;
+            align-items: flex-start;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            padding: 16px;
+            background-color: #fff;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .auction-item img {
+            width: 250px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .auction-info {
+            flex-grow: 1;
+            flex-direction: column;
+        }
+
+        .auction-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .aution-artist {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .auction-condition {
+            font-size: 12px;
+            margin-bottom: 8px;
+            padding-top: 8px;
+            color: gray;
+        }
+
+        .auction-price {
+            color: green;
+            font-weight: bold;
+            padding-top: 8px;
+        }
+
+        .auction-description {
+            max-width: 400px;
+            font-size: 14px;
+            color: #444;
+        }
+    </style>
+</head>
 <body>
 
-<h1>Hello World!</h1>
-<p>Welcome to my first Django project!</p>
+    <div class="sidebar">
+        <h3>Filters</h3>
+        <form method="get">
+            <label>Minimum Price:</label><br>
+            <input type="number" name="min_price" step="0.01"><br><br>
+            <label>Maximum Price:</label><br>
+            <input type="number" name="max_price" step="0.01"><br><br>
+            <button type="submit">Apply</button>
+        </form>
+    </div>
+
+    <div class="main-content">
+        <h1>Live Auctions</h1>
+        {% if auctions %}
+            {% for auction in auctions %}
+                <div class="auction-item">
+                    {% if auction.preview %}
+                        <img src="{{ auction.preview.url }}" alt="{{ auction.title }}">
+                    {% endif %}
+                    <div class="auction-info">
+                        <div class="auction-title">{{ auction.pieceName }}</div>
+                        <div class="auction-artist">By : {{ auction.artistName }}</div>
+                        <div class="auction-condition">{{ auction.condition }}</div>
+                        <div class="auction-price">
+                            <strong>Buy It Now:</strong> <br> US ${{ auction.priceBIN|intcomma }} <br>
+                            <p></p>
+                            {% if auction.bids.exists %}
+                                <p><strong>Current Bid:</strong> <br> US ${{ highest_bid }}</p>
+                            {% else %}
+                                <p><strong>Starting Bid:</strong> <br> US ${{ auction.startingBid|intcomma }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="auction-price"></div>
+                    </div>
+                    
+                    <div class="auction-description">{{ auction.description }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No auctions available.</p>
+        {% endif %}
+    </div>
 
 </body>
 </html>

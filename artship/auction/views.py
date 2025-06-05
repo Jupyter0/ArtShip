@@ -1,7 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.template import loader
+from .models import Auction
 
 def auction(request):
-    template = loader.get_template('auction.html')
-    return HttpResponse(template.render())
+    auctions = Auction.objects.all()
+
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+
+    if min_price:
+        auctions = auctions.filter(priceBIN__gte=min_price)
+    if max_price:
+        auctions = auctions.filter(priceBIN__lte=max_price)
+    if min_price and max_price:
+        auctions = auctions.filter(priceBIN__range=(min_price, max_price))
+    
+    return HttpResponse(render(request, 'auction.html', {'auctions' : auctions}))
+
+def auction_detail(request, pk):
+    auction = get_object_or_404(Auction, pk=pk)
+    highest_bid = auction.bids.order_by('-amount').first()
+    return render(request, 'auction/detail.html', {
+        'auction': auction,
+        'highest_bid': highest_bid
+    })
