@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<style>
+    .auction-detail-container {
+        display: flex;
+        max-width: 1000px;
+        margin: 40px;
+        gap: 40px;
+    }
+    .auction-detail-left {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .auction-image {
+        flex: 1;
+    }
+
+    .auction-image img {
+        width: 450px;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .auction-info {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .auction-info h1 {
+        margin-top: 0;
+    }
+
+    .auction-info p {
+        margin: 10px 0;
+    }
+
+    .back-link {
+        margin-top: 20px;
+    }
+    .auction-price {
+        color: green;
+        font-weight: bold;
+        padding-top: 8px;
+    }
+    .bid-history {
+        margin-top: 30px;
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 14px;
+    }
+    .bid-entry {
+        padding: 6px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .bid-entry:last-child {
+        border-bottom: none;
+    }
+</style>
+
+<div class="auction-detail-container">
+    <div class="auction-detail-left">
+        <div class="auction-image">
+            <img src="{{ auction.preview.url }}" alt="{{ auction.pieceName }}">
+        </div>
+
+        <div class="bid-history">
+            <strong>Bid History:</strong>
+            {% if auction.bids.exists %}
+            {% for bid in bid_history %}
+                <div class="bid-entry">
+                    ${{ bid.amount }} - {{ bid.user.username|default:"Anonymous" }} at {{ bid.placed_at|date:"M d, H:i" }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No bids yet.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="auction-info">
+        <h1>{{ auction.pieceName }}</h1>
+        <p><strong>Artist:</strong> {{ auction.artistName }}</p>
+        <p><strong>Condition:</strong> {{ auction.condition }}</p>
+        <p><strong>Description:</strong><br>{{ auction.description }}</p>
+
+        <hr>
+
+        <p class = "auction-price"><strong>Buy It Now:</strong> US ${{ auction.priceBIN|intcomma }}</p>
+
+        {% if highest_bid %}
+        <p class = "auction-price"><strong>Current Highest Bid:</strong> US ${{ highest_bid.amount|intcomma }}</p>
+        {% else %}
+        <p class = "auction-price"><strong>Starting Bid:</strong> US ${{ auction.startingBid|intcomma }}</p>
+        {% endif %}
+
+        <div class="back-link">
+        <a href="{% url 'auction' %}">← Back to all listings</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

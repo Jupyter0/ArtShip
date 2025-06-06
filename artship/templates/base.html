@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}ArtShip{% endblock %}</title>
+  <link rel="shortcut icon" href="{% static 'artship.ico' %}" type="image/x-icon">
+</head>
+<body>
+  <link rel="stylesheet" href="{% static 'base.css' %}">
+  <nav>
+    <div class="nav-left">
+      <a href="/auction/" style="display: flex; align-items: center;">
+        <img src="{% static 'artship.ico' %}" alt="Logo" class="nav-icon">
+        <span style="margin-left: 8px;">ArtShip</span>
+    </a>
+    </div>
+    <div class="nav-right">
+      {% if user.is_authenticated %}
+        <span>Hello, {{ user.username }}</span>
+        <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+          {% csrf_token %}
+        </form>
+
+        <a href="#" id="logout-link">Logout</a>
+        <script src = "{% static 'logout.js' %}"></script>
+</form>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>

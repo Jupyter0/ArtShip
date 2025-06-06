@@ -16,12 +16,14 @@ def auction(request):
     if min_price and max_price:
         auctions = auctions.filter(priceBIN__range=(min_price, max_price))
     
-    return HttpResponse(render(request, 'auction.html', {'auctions' : auctions}))
+    return HttpResponse(render(request, 'auction/auction.html', {'auctions' : auctions}))
 
-def auction_detail(request, pk):
-    auction = get_object_or_404(Auction, pk=pk)
+def auction_detail(request, slug):
+    auction = get_object_or_404(Auction, slug=slug)
     highest_bid = auction.bids.order_by('-amount').first()
+    bid_history = auction.bids.order_by('-placedAt')
     return render(request, 'auction/detail.html', {
         'auction': auction,
-        'highest_bid': highest_bid
+        'highest_bid': highest_bid,
+        'bid_history': bid_history,
     })

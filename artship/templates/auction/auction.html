@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'auction.css' %}">
+<div class="sidebar">
+    <h3>Filters</h3>
+    <form method="get">
+        <label>Minimum Price:</label><br>
+        <input type="number" name="min_price" step="0.01"><br><br>
+        <label>Maximum Price:</label><br>
+        <input type="number" name="max_price" step="0.01"><br><br>
+        <button type="submit">Apply</button>
+    </form>
+</div>
+
+<div class="main-content">
+    <h1>Live Auctions</h1>
+    {% if auctions %}
+        {% for auction in auctions %}
+            <div class="auction-item">
+                {% if auction.preview %}
+                    <img src="{{ auction.preview.url }}" alt="{{ auction.title }}">
+                {% endif %}
+                <div class="auction-info">
+                    <div class="auction-title">
+                        <a href="{% url 'auction_detail' auction.slug %}">{{ auction.pieceName }}</a>
+                    </div>
+                    <div class="auction-artist">By : {{ auction.artistName }}</div>
+                    <div class="auction-condition">{{ auction.condition }}</div>
+                    <div class="auction-price">
+                        <strong>Buy It Now:</strong> <br> US ${{ auction.priceBIN|intcomma }} <br> <br>
+                        {% if auction.bids.exists %}
+                            <p><strong>Current Bid:</strong> <br> US ${{ highest_bid|intcomma }}</p>
+                        {% else %}
+                            <p><strong>Starting Bid:</strong> <br> US ${{ auction.startingBid|intcomma }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="auction-description">{{ auction.description }}</div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No auctions available.</p>
+    {% endif %}
+</div>
+{% endblock %}
