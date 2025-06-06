@@ -32,7 +32,7 @@
                     <div class="auction-price">
                         <strong>Buy It Now:</strong> <br> US ${{ auction.priceBIN|intcomma }} <br> <br>
                         {% if auction.bids.exists %}
-                            <p><strong>Current Bid:</strong> <br> US ${{ highest_bid|intcomma }}</p>
+                            <p><strong>Current Bid:</strong> <br> US ${{ auction.highestBid.amount|intcomma }}</p>
                         {% else %}
                             <p><strong>Starting Bid:</strong> <br> US ${{ auction.startingBid|intcomma }}</p>
                         {% endif %}

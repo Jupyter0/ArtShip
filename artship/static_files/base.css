@@ -7,6 +7,30 @@
 body {
     font-family: Arial, sans-serif;
 }
+.message-container {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 600px;
+  }
+
+.message {
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    opacity: 0.95;
+}
+
+.message.success { background-color: #28a745; }
+.message.error   { background-color: #dc3545; }
+.message.info    { background-color: #17a2b8; }
+.message.warning { background-color: #ffc107; color: #333; }
 
 nav {
     background-color: #222;

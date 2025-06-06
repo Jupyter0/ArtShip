@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 class Auction(models.Model):
     pieceName = models.CharField(max_length=255)
@@ -12,6 +13,9 @@ class Auction(models.Model):
     priceBIN = models.DecimalField(max_digits=13, decimal_places=2, default=0.00)
     startingBid = models.DecimalField(max_digits=13, decimal_places=2, default=0.00)
     createdAt = models.DateTimeField(auto_now_add=True)
+    highestBid = models.DecimalField(max_digits=13, decimal_places=2)
+
+    is_active = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -31,6 +35,7 @@ class Bid(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE, related_name="bids")
     amount = models.DecimalField(max_digits=13, decimal_places=2)
     placedAt = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"${self.amount} on {self.auction.name}"

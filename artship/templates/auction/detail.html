@@ -16,7 +16,7 @@
             {% if auction.bids.exists %}
             {% for bid in bid_history %}
                 <div class="bid-entry">
-                    ${{ bid.amount }} - {{ bid.user.username|default:"Anonymous" }} at {{ bid.placed_at|date:"M d, H:i" }}
+                    ${{ bid.amount|intcomma }} - {{ bid.user.username|default:"Anonymous" }} at {{ bid.placedAt|date:"M d, H:i" }}
                 </div>
                 {% endfor %}
             {% else %}
@@ -40,6 +40,23 @@
         <p class = "auction-price"><strong>Starting Bid:</strong> US ${{ auction.startingBid|intcomma }}</p>
         {% endif %}
 
+        <form method="post" style="margin-top: 20px;">
+            {% csrf_token %}
+
+            {% if auction.is_active %}
+                <button type="submit" name="action" value="buy" class="btn btn-primary">Buy It Now</button>
+            {% endif %}
+            </form>
+
+            {% if auction.is_active %}
+                <form method="post" style="margin-top: 10px;">
+                    {% csrf_token %}
+                    <input type="number" name="bid_amount" step="0.01" min="0" placeholder="Enter your bid" required>
+                    <button type="submit" name="action" value="bid">Place Bid</button>
+                </form>
+            {% else %}
+                <p><strong>This auction is closed.</strong></p>
+            {% endif %}
         <div class="back-link">
         <a href="{% url 'auction' %}">← Back to all listings</a>
         </div>
