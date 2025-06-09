@@ -19,8 +19,10 @@ from django.conf import settings
 from django.urls import include, path
 from django.conf.urls.static import static
 import users.views as UserViews
+from . import views
 
 urlpatterns = [
+    path('', views.my_redirect_view, name='my_redirect'),
     path('auction/', include('auction.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
