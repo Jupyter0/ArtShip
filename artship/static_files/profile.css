@@ -37,6 +37,16 @@
     cursor: pointer;
 }
 
+.gallery-redirect {
+    padding: 8px 16px;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
 .username-form button:hover {
     background-color: #005fa3;
 }
