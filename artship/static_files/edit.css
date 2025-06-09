@@ -1,0 +1,36 @@
+.edit-form {
+max-width: 700px;
+margin: 40px auto;
+}
+
+.edit-form form {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.edit-form button {
+padding: 10px 15px;
+border: none;
+border-radius: 5px;
+font-weight: bold;
+cursor: pointer;
+}
+
+.btn-update {
+background-color: #0077cc;
+color: white;
+}
+
+.btn-update:hover {
+background-color: #005fa3;
+}
+
+.btn-delete {
+background-color: #e74c3c;
+color: white;
+}
+
+.btn-delete:hover {
+background-color: #c0392b;
+}

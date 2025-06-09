@@ -1,0 +1,32 @@
+.form-preview-container {
+    display: flex;
+    gap: 40px;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.form-container, .preview-container {
+    flex: 1;
+}
+
+.preview-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f9f9f9;
+}
+
+.preview-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.preview-label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.preview-value {
+    margin-bottom: 10px;
+}
