@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+  .form-preview-container {
+    display: flex;
+    gap: 40px;
+    padding: 20px;
+    align-items: flex-start;
+  }
+
+  .form-container, .preview-container {
+    flex: 1;
+  }
+
+  .preview-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f9f9f9;
+  }
+
+  .preview-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .preview-label {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .preview-value {
+    margin-bottom: 10px;
+  }
+</style>
+
+<h2>Create a New Auction</h2>
+
+<div class="form-preview-container">
+  <!-- Left: Auction Form -->
+  <div class="form-container">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Create Auction</button>
+    </form>
+  </div>
+
+  <!-- Right: Live Preview -->
+  <div class="preview-container">
+    <div class="preview-card">
+      <h3 id="preview-title">[Title]</h3>
+      <img id="preview-image" src="" alt="Preview Image" style="display:none;" />
+      <p class="preview-label">Artist:</p>
+      <p class="preview-value" id="preview-artist">[Artist Name]</p>
+
+      <p class="preview-label">Condition:</p>
+      <p class="preview-value" id="preview-condition">[Condition]</p>
+
+      <p class="preview-label">Description:</p>
+      <p class="preview-value" id="preview-description">[Description]</p>
+
+      <p class="preview-label">Starting Bid:</p>
+      <p class="preview-value" id="preview-starting">[Starting Bid]</p>
+
+      <p class="preview-label">Buy It Now:</p>
+      <p class="preview-value" id="preview-bin">[BIN Price]</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const updateText = (inputId, previewId) => {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.addEventListener("input", () => {
+          document.getElementById(previewId).textContent = input.value || `[${previewId.replace('preview-', '').replace(/-/g, ' ')}]`;
+        });
+      }
+    };
+
+    updateText("id_pieceName", "preview-title");
+    updateText("id_artistName", "preview-artist");
+    updateText("id_condition", "preview-condition");
+    updateText("id_description", "preview-description");
+    updateText("id_startingBid", "preview-starting");
+    updateText("id_priceBIN", "preview-bin");
+
+    const imageInput = document.getElementById("id_preview");
+    if (imageInput) {
+      imageInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            const img = document.getElementById("preview-image");
+            img.src = event.target.result;
+            img.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}

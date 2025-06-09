@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'profile.css' %}">
+
+<div class="profile-container">
+  <div class="profile-header">
+    <h2>Welcome, {{ profile.user.username }}</h2>
+  </div>
+
+  <form method="post" class="username-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Username</button>
+  </form>
+
+  <h3>Your Listings</h3>
+  {% if user_listings %}
+    <div class="auction-list">
+      {% for auction in user_listings %}
+        <div class="auction-card">
+          <a href="{% url 'auction_detail' auction.slug %}">
+            <img src="{{ auction.preview.url }}" alt="{{ auction.pieceName }}">
+          </a>
+          <div class="auction-card-content">
+            <h4>{{ auction.pieceName }}</h4>
+            <p>${{ auction.priceBIN|intcomma }}</p>
+            <a href="{% url 'edit_auction' auction.slug %}" class="btn">Edit</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>You haven't listed anything yet.</p>
+  {% endif %}
+
+  <h3>Auctions You've Bid On</h3>
+  {% if user_bids %}
+    <div class="auction-list">
+      {% for auction in user_bids %}
+        <div class="auction-card">
+          <a href="{% url 'auction_detail' auction.slug %}">
+            <img src="{{ auction.preview.url }}" alt="{{ auction.pieceName }}">
+          </a>
+          <div class="auction-card-content">
+            <h4>{{ auction.pieceName }}</h4>
+            {% if auction.sold_for %}
+                <p>Sold for: ${{ auction.sold_for|intcomma }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>You haven't placed any bids yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

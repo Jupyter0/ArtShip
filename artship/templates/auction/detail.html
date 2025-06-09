@@ -28,12 +28,26 @@
         <h1>{{ auction.pieceName }}</h1>
         <p><strong>Artist:</strong> {{ auction.artistName }}</p>
         <p><strong>Condition:</strong> {{ auction.condition }}</p>
+        {% if auction.tags.exists %}
+            <p><strong>Tags:</strong>
+                {% for tag in auction.tags.all %}
+                <span style="background:#eee; padding:3px 8px; margin-right:5px; border-radius:5px;">#{{ tag.name }}</span>
+                {% endfor %}
+            </p>
+        {% endif %}
         <p><strong>Description:</strong><br>{{ auction.description }}</p>
 
         <hr>
-
-        <p class = "auction-price"><strong>Buy It Now:</strong> US ${{ auction.priceBIN|intcomma }}</p>
-
+        
+        {% if not auction.is_active %}
+            {% if auction.sold_for %}
+                <p>Sold for: ${{ auction.sold_for|intcomma }} to {{ auction.purchased_by.username }}</p>
+            {% else %}
+                <p>No one placed a bid</p>
+            {% endif %}
+        {% else %}
+            <p class = "auction-price"><strong>Buy It Now:</strong> US ${{ auction.priceBIN|intcomma }}</p>
+        
         {% if highest_bid %}
         <p class = "auction-price"><strong>Current Highest Bid:</strong> US ${{ highest_bid.amount|intcomma }}</p>
         {% else %}
@@ -57,6 +71,8 @@
             {% else %}
                 <p><strong>This auction is closed.</strong></p>
             {% endif %}
+        {% endif %}
+
         <div class="back-link">
         <a href="{% url 'auction' %}">← Back to all listings</a>
         </div>

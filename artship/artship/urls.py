@@ -18,12 +18,15 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import include, path
 from django.conf.urls.static import static
+import users.views as UserViews
 
 urlpatterns = [
     path('auction/', include('auction.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('users.urls')),
+    path('<slug:slug>/gallery/', UserViews.gallery_by_user, name='user_gallery'),
+    path('<slug:slug>/', UserViews.profile_by_user, name='user_profile'),
 ]
 
 if settings.DEBUG:

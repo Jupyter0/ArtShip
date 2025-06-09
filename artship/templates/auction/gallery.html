@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<h2>My Art Gallery</h2>
+
+{% if purchases %}
+  <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    {% for auction in purchases %}
+      <div style="width: 220px; border: 1px solid #ccc; border-radius: 8px; padding: 10px;">
+        <img src="{{ auction.preview.url }}" alt="{{ auction.pieceName }}" style="width:100%; height:auto; border-radius: 4px;">
+        <h4>{{ auction.pieceName }}</h4>
+        <p>By {{ auction.artistName }}</p>
+        <p style="font-weight: bold;">US ${{ auction.sold_for|intcomma }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>You haven't bought anything yet.</p>
+{% endif %}
+{% endblock %}

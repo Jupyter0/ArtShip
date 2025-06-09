@@ -17,7 +17,8 @@
     </div>
     <div class="nav-right">
       {% if user.is_authenticated %}
-        <span>Hello, {{ user.username }}</span>
+        <a href="{% url 'user_profile' user.profile.slug %}" class="btn">Hello, {{ user.username }}</a>
+        <a href="{% url 'create_auction' %}">Post an Auction</a>
         <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
           {% csrf_token %}
         </form>

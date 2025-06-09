@@ -1,0 +1,87 @@
+.profile-container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 30px;
+    font-family: Arial, sans-serif;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-header h2 {
+    margin-bottom: 0;
+}
+
+.username-form {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.username-form input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.username-form button {
+    padding: 8px 16px;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.username-form button:hover {
+    background-color: #005fa3;
+}
+
+h3 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-top: 40px;
+}
+
+.auction-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.auction-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fdfdfd;
+    transition: box-shadow 0.2s ease;
+}
+
+.auction-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.auction-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.auction-card-content {
+    padding: 10px;
+}
+
+.auction-card-content h4 {
+    margin: 5px 0;
+}
+
+.auction-card-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
